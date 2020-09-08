@@ -8,8 +8,9 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import TabThreeScreen from '../screens/TabThreeScreen';
-import TabLoginScreen from '../screens/TabLoginScreen';
-import TabSignupScreen from '../screens/TabSignupScreen';
+import TabSettingScreen from '../screens/TabSettingScreen';
+
+import { Button,Text,TouchableOpacity,AsyncStorage } from 'react-native';
 
 import { BottomTabParamList, TabOneParamList, TabTwoParamList, TabThreeParamList, TabLoginParamList , TabSignupParamList } from '../types';
 
@@ -27,7 +28,7 @@ export default function BottomTabNavigator() {
     initialRouteName="TabOne"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Home"
         component={TabOneNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-home" color={color} />,
@@ -35,34 +36,26 @@ export default function BottomTabNavigator() {
       />
 
       <BottomTab.Screen
-        name="TabTwo"
+        name="Member"
         component={TabTwoNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-person" color={color} />,
         }}
       />
+
       <BottomTab.Screen
-        name="TabThree"
+        name="Money"
         component={TabThreeNavigator}
         options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-cash" color={color} />,
+        }}
+      />
+
+      <BottomTab.Screen
+        name="Setting"
+        component={TabSettingNavigator}
+        options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-settings" color={color} />,
-        }}
-      />
-
-<BottomTab.Screen
-        name="TabLogin"
-        component={TabLoginNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-log-in" color={color} />,
-        }}
-      />
-
-
-<BottomTab.Screen
-        name="TabSignup"
-        component={TabSignupNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-log-in" color={color} />,
         }}
       />
 
@@ -83,13 +76,24 @@ function TabBarIcon(props: { name: string; color: string }) {
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
-function TabOneNavigator() {
+function TabOneNavigator({navigation}) {
   return (
     <TabOneStack.Navigator>
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: 'หน้าหลัก' }}
+        options={{
+          headerTitle: 'หน้าหลัก',
+          headerLeft: () => (<Text></Text>),
+          headerRight: () => (
+            <TouchableOpacity style={{padding: 5}} onPress={async()=> {
+              await AsyncStorage.removeItem('userProject')
+              navigation.navigate('Login')
+            }}>
+              <TabBarIcon name="ios-log-out"/>
+            </TouchableOpacity>
+          ),
+        }}
       />
     </TabOneStack.Navigator>
   );
@@ -103,7 +107,18 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'สมาชิก' }}
+        options={{ 
+          headerTitle: 'สมาชิก',
+          headerLeft: () => (<Text></Text>),
+          headerRight: () => (
+            <TouchableOpacity style={{padding: 5}} onPress={async()=> {
+              await AsyncStorage.removeItem('userProject')
+              navigation.navigate('Login')
+            }}>
+              <TabBarIcon name="ios-log-out"/>
+            </TouchableOpacity>
+          ),
+        }}
       />
     </TabTwoStack.Navigator>
   );
@@ -118,7 +133,18 @@ function TabThreeNavigator() {
       <TabThreeStack.Screen
         name="TabThreeScreen"
         component={TabThreeScreen}
-        options={{ headerTitle: 'ตั้งค่าข้อมูล' }}
+        options={{ 
+          headerTitle: 'รายการชำระเงิน',
+          headerLeft: () => (<Text></Text>),
+          headerRight: () => (
+            <TouchableOpacity style={{padding: 5}} onPress={async()=> {
+              await AsyncStorage.removeItem('userProject')
+              navigation.navigate('Login')
+            }}>
+              <TabBarIcon name="ios-log-out"/>
+            </TouchableOpacity>
+          ),
+        }}
       />
     </TabThreeStack.Navigator>
   );
@@ -126,33 +152,27 @@ function TabThreeNavigator() {
 
 
 
-const TabLoginStack = createStackNavigator<TabLoginParamList>();
+const TabSettingStack = createStackNavigator<TabLoginParamList>();
 
-function TabLoginNavigator() {
+function TabSettingNavigator() {
   return (
-    <TabLoginStack.Navigator>
-      <TabLoginStack.Screen
-        name="TabLoginScreen"
-        component={TabLoginScreen}
-        options={{ headerTitle: 'Login' }}
+    <TabSettingStack.Navigator>
+      <TabSettingStack.Screen
+        name="TabSettingScreen"
+        component={TabSettingScreen}
+        options={{ 
+          headerTitle: 'ตั้งค่าข้อมูล',
+          headerLeft: () => (<Text></Text>),
+          headerRight: () => (
+            <TouchableOpacity style={{padding: 5}} onPress={async()=> {
+              await AsyncStorage.removeItem('userProject')
+              navigation.navigate('Login')
+            }}>
+              <TabBarIcon name="ios-log-out"/>
+            </TouchableOpacity>
+          ),
+        }}
       />
-    </TabLoginStack.Navigator>
-  );
-}
-
-
-
-
-const TabSignupStack = createStackNavigator<TabSignupParamList>();
-
-function TabSignupNavigator() {
-  return (
-    <TabSignupStack.Navigator>
-      <TabSignupStack.Screen
-        name="TabSignupScreen"
-        component={TabSignupScreen}
-        options={{ headerTitle: 'Sign Up' }}
-      />
-    </TabSignupStack.Navigator>
+    </TabSettingStack.Navigator>
   );
 }

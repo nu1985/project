@@ -1,31 +1,235 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
-
+import React, { Component } from 'react';
+import { StyleSheet, AsyncStorage, Button, SafeAreaView, ScrollView,Image} from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import API from '../API'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Constants from 'expo-constants';
 
-export default function TabTwoScreen() {
-  return (
-    <View style={styles.container}>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+const api = API.create()
 
-      <Text style={styles.title}>สมาชิกหมายเลข  230</Text>
-      <Text style={styles.title}>พลเอก นิพัฒน์ บุณยรัตพันธุ์ </Text>
+export default class TabTwoScreen extends Component {
 
-<Text style={styles.title}>หมายเลขฌาปนกิจ 0000000230 </Text>
+  constructor() {
+    super();
+    this.state = {
+        profile: ''
+    }
+  }
 
+  componentDidMount() {
+    this.getProFile()
+  }
 
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+  getProFile =async()=> {
+    let user = await AsyncStorage.getItem('userProject')
+    console.log(user)
+    if(user){
+      let users = JSON.parse(user)
+      let profiles = await api.getProfile(users.user_id)
+    console.log(profiles)
+      if(profiles.status === 200){
+        this.setState({profile: profiles.data})
+      }
+    }else{
+      this.props.navigation.navigate('Login')
+    } 
+  }
 
-    </View>
-  );
+  renderProfile(){
+    const { profile } = this.state
+    if(profile !== ''){
+      return (
+        <View style={{alignItems: 'center', padding: 10}}>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>คำนำหน้า ชื่อ-สกุล</Text>
+            <Text style={styles.descValue}>{profile.rang_name+profile.Name+' '+profile.lastname}</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>หมายเลข ปชช.</Text>
+            <Text style={styles.descValue}>{profile.id_13}</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>วันเกิด</Text>
+            <Text style={styles.descValue}>{profile.birth+' อายุ '+profile.age}</Text>
+            <Text style={styles.descTitle}>เพศ</Text>
+            <Text style={styles.descValue}>{profile.type_name222}</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>ประเภทสมาชิก</Text>
+            <Text style={styles.descValue}>{profile.position}</Text>
+            <Text style={styles.descTitle}>ศูนย์ประสานงาน</Text>
+            <Text style={styles.descValue}>{profile.tumbon_id}</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>ที่อยู่(ที่ติดต่อได้)</Text>
+            <Text style={styles.descValue}>{profile.remark1}</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>ที่อยู่ตามทะเบียนบ้าน</Text>
+            <Text style={styles.descValue}>{profile.remark1}</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>ชื่อธนาคาร</Text>
+            <Text style={styles.descValue}>-</Text>
+            <Text style={styles.descTitle}>สาขา</Text>
+            <Text style={styles.descValue}>-</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>หมายเลขบัญชี</Text>
+            <Text style={styles.descValue}>-</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>โทรศัพท์มือถือ</Text>
+            <Text style={styles.descValue}>{profile.tel}</Text>
+          
+            <Text style={styles.descTitle}>ผลการอนุมัติ</Text>
+            <Text style={styles.descValue}>อนุมัติ</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+          <Text style={styles.descTitle}>วันที่สมัคร</Text>
+            <Text style={styles.descValue}>{profile.date_first}</Text>
+            <Text style={[styles.descTitle,{flex: 1}]}>วันที่อนุมัติ</Text>
+            <Text style={styles.descValue}>{profile.date_first1}</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={[styles.descTitle,{flex: 1}]}>รอบอนุมัติสมัครที่</Text>
+            <Text style={styles.descValue}>{profile.datefirst_pay+'/'+profile.yearsfirst_pay}</Text>
+            <Text style={[styles.descTitle,{flex: 1}]}>วันที่ส่งเงินคงสภาพ</Text>
+            <Text style={styles.descValue}>{profile.date_continue}</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>สถานะภาพสมรส</Text>
+            <Text style={styles.descValue}>-</Text>
+
+            <Text style={styles.descTitle}>ชื่อสามีหรือภรรยา</Text>
+            <Text style={styles.descValue}>-</Text>
+          </View>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>ชื่อผู้จัดการศพ</Text>
+            <Text style={styles.descValue}>-</Text>
+          </View>
+
+          
+          <Text style={{backgroundColor: '#ddd', width: '100%', textAlign: 'center'}}>ข้อมูลผู้รับเงินสงเคราะห์</Text>
+          <View style={{backgroundColor: '#545454', width: '100%'}}>
+            <View style={styles.titleListDead}>
+              <Text style={{width: 40, textAlign: 'center'}}>ลำดับ</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>ชื่อ-สกุล</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>ความสัมพันธ์</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>เลข ปชช.</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>ที่อยู่</Text>
+            </View>
+            {profile.name_dead1 !== '' &&
+            <View style={styles.listDesc}>
+              <Text style={{width: 40, textAlign: 'center'}}>1</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.name_dead1}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.re1}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.name_dead1_id13}</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.add_name_dead1}</Text>
+            </View>
+            }
+            {profile.name_dead2 !== '' &&
+            <View style={styles.listDesc}>
+              <Text style={{width: 40, textAlign: 'center'}}>2</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.name_dead2}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.re2}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.name_dead2_id13}</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.add_name_dead2}</Text>
+            </View>
+            }
+            {profile.name_dead3 !== '' &&
+            <View style={styles.listDesc}>
+              <Text style={{width: 40, textAlign: 'center'}}>3</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.name_dead3}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.re3}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.name_dead3_id13}</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.add_name_dead3}</Text>
+            </View>
+            }
+            {profile.name_dead4 !== '' &&
+            <View style={styles.listDesc}>
+              <Text style={{width: 40, textAlign: 'center'}}>4</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.name_dead4}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.re4}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.name_dead4_id13}</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.add_name_dead4}</Text>
+            </View>
+            }
+            {profile.name_dead5 !== '' &&
+            <View style={styles.listDesc}>
+              <Text style={{width: 40, textAlign: 'center'}}>5</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.name_dead5}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.re5}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.name_dead5_id13}</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.add_name_dead5}</Text>
+            </View>
+            }
+
+          </View>
+          <Text style={{backgroundColor: '#ddd', width: '100%'}}>กรณีเปลี่ยนสถานะ</Text>
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>สถานะสมาชิก</Text>
+            {profile.status_id === 1 ? 
+            <Text style={styles.descValue}>รับสิทธิ์</Text>
+            :
+            <Text style={styles.descValue}>ไม่รับสิทธิ์</Text>
+            }
+          </View>
+
+        </View>
+      )
+    }else{
+      return <Text>No data</Text>
+    }
+  }
+
+  static navigationOptions = ({ navigation }) => {
+    const { state: { params = {} } } = navigation;
+    return {
+      title: 'HOME',
+    };
+  }
+
+  render() {
+    // React.useLayoutEffect(() => {
+    //   navigation.setOptions({
+    //     headerLeft: () => (
+    //       <Text>MENU</Text>
+    //     ),
+    //   });
+    // }, [navigation]);
+    return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        {this.renderProfile()}
+      </ScrollView>
+    </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  scrollView: {
+    margin: 10,
   },
   title: {
     fontSize: 20,
@@ -36,4 +240,27 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  images: {
+    height: 100,
+    width: 100,
+    borderRadius: 50
+  },
+  listDesc:{
+    flexDirection: 'row',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    alignItems: 'flex-start'
+  },
+  descTitle: {
+    color: '#545454',
+    marginRight: 5
+  },
+  descValue: {
+    flex: 1
+  },
+  titleListDead: {
+    flexDirection: 'row',
+    backgroundColor: '#CCCCFF',
+  }
 });

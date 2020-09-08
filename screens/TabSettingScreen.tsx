@@ -9,11 +9,11 @@ import { Text, View } from '../components/Themed';
 import { StyleSheet } from 'react-native';
 
 
-export default function TabThreeScreen() {
+export default function TabSettingScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Money</Text>
+      <Text style={styles.title}>Setting</Text>
     </View>
   );
 }
