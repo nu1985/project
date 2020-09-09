@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React, { Component } from 'react';
-import { StyleSheet, AsyncStorage, Button, SafeAreaView, ScrollView,Image} from 'react-native';
+import { StyleSheet, AsyncStorage, Button, SafeAreaView, ScrollView,Image,TouchableOpacity,Linking} from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import API from '../API'
@@ -15,12 +15,14 @@ export default class TabOneScreen extends Component {
   constructor() {
     super();
     this.state = {
-        profile: ''
+        profile: '',
+        txtStatus: ''
     }
   }
 
-  componentDidMount() {
-    this.getProFile()
+  componentDidMount =async()=> {
+    await this.getProFile()
+    this.getStatus()
   }
 
   getProFile =async()=> {
@@ -29,13 +31,33 @@ export default class TabOneScreen extends Component {
     if(user){
       let users = JSON.parse(user)
       let profiles = await api.getProfile(users.user_id)
-    // console.log(profiles)
+    console.log(profiles)
       if(profiles.status === 200){
         this.setState({profile: profiles.data})
       }
     }else{
       this.props.navigation.navigate('Login')
     } 
+  }
+
+  getStatus =async()=> {
+    const {profile} = this.state
+    let status = await api.getStatus()
+    // console.log(status)
+    if(status.status === 200){
+      let statusList = status.data
+      for(var i =0;i<statusList.length;i++){
+        if(statusList[i].status_id === profile.status_id){
+          this.setState({txtStatus: statusList[i].status_name})
+        }
+      }
+    }
+  }
+
+  pressQrcode(){
+    const {profile} = this.state
+    let url = 'http://ca-comil.online/aspdata/printrecive_QRAPI_php.php?member_id='+profile.member_id+'&dead_pay1='+profile.dead_pay1+'&dead_pay2='+profile.dead_pay2
+    Linking.openURL(url);
   }
 
   renderProfile(){
@@ -57,11 +79,7 @@ export default class TabOneScreen extends Component {
 
           <View style={styles.listDesc}>
             <Text style={styles.descTitle}>สถานะสมาชิก</Text>
-            {profile.status_id === 1 ? 
-            <Text style={styles.descValue}>รับสิทธิ์</Text>
-            :
-            <Text style={styles.descValue}>ไม่รับสิทธิ์</Text>
-            }
+      <     Text style={styles.descValue}>{this.state.txtStatus}</Text>
           </View>
 
           <View style={styles.listDesc}>
@@ -118,6 +136,10 @@ export default class TabOneScreen extends Component {
             }
           </View>
 
+          <TouchableOpacity onPress={()=> this.pressQrcode()} style={{marginTop: 40 , alignItems: 'center'}}>
+            <Image source={require('./images/qrscan.png')} style={{width: 60, height: 60}} resizeMode="cover"/>
+            <Text>สแกน QR เพื่อโอนเงิน</Text>
+          </TouchableOpacity>
         </View>
       )
     }else{

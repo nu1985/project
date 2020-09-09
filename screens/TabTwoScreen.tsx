@@ -14,12 +14,14 @@ export default class TabTwoScreen extends Component {
   constructor() {
     super();
     this.state = {
-        profile: ''
+        profile: '',
+        txtStatus: ''
     }
   }
 
-  componentDidMount() {
-    this.getProFile()
+  componentDidMount =async()=> {
+    await this.getProFile()
+    this.getStatus()
   }
 
   getProFile =async()=> {
@@ -35,6 +37,20 @@ export default class TabTwoScreen extends Component {
     }else{
       this.props.navigation.navigate('Login')
     } 
+  }
+
+  getStatus =async()=> {
+    const {profile} = this.state
+    let status = await api.getStatus()
+    // console.log(status)
+    if(status.status === 200){
+      let statusList = status.data
+      for(var i =0;i<statusList.length;i++){
+        if(statusList[i].status_id === profile.status_id){
+          this.setState({txtStatus: statusList[i].status_name})
+        }
+      }
+    }
   }
 
   renderProfile(){
@@ -179,17 +195,22 @@ export default class TabTwoScreen extends Component {
               <Text style={{flex: 1, textAlign: 'center'}}>{profile.add_name_dead5}</Text>
             </View>
             }
+            {profile.name_dead6 !== '' &&
+            <View style={styles.listDesc}>
+              <Text style={{width: 40, textAlign: 'center'}}>6</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.name_dead6}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.re6}</Text>
+              <Text style={{width: 80, textAlign: 'center'}}>{profile.name_dead6_id13}</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{profile.add_name_dead6}</Text>
+            </View>
+            }
 
           </View>
           <Text style={{backgroundColor: '#ddd', width: '100%'}}>กรณีเปลี่ยนสถานะ</Text>
 
           <View style={styles.listDesc}>
             <Text style={styles.descTitle}>สถานะสมาชิก</Text>
-            {profile.status_id === 1 ? 
-            <Text style={styles.descValue}>รับสิทธิ์</Text>
-            :
-            <Text style={styles.descValue}>ไม่รับสิทธิ์</Text>
-            }
+            <Text style={styles.descValue}>{this.state.txtStatus}</Text>
           </View>
 
         </View>

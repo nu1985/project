@@ -1,40 +1,185 @@
-
-
-
 import React, { Component } from 'react';
-import { TextInput } from 'react-native';
-
+import { StyleSheet, AsyncStorage, Button, SafeAreaView, ScrollView,Image} from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { StyleSheet } from 'react-native';
+import API from '../API'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Constants from 'expo-constants';
 
+const api = API.create()
 
-export default function TabThreeScreen() {
+export default class TabThreeScreen extends Component {
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Money</Text>
-    </View>
-  );
+  constructor() {
+    super();
+    this.state = {
+      moneyList: ''
+    }
+  }
+
+  componentDidMount() {
+    this.getProFile()
+  }
+
+  getProFile =async()=> {
+    let user = await AsyncStorage.getItem('userProject')
+    console.log(user)
+    let rr = [
+      {n:'0'},{n:'1'},{n:'2'}
+    ]
+    this.setState({moneyList: rr})
+    // if(user){
+    //   let users = JSON.parse(user)
+    //   let profiles = await api.getProfile(users.user_id)
+    //   console.log(profiles)
+    //   if(profiles.status === 200){
+    //     this.setState({moneyList: [{'0'},{'1'},{'2'}]})
+    //   }
+    // }else{
+    //   this.props.navigation.navigate('Login')
+    // } 
+  }
+
+  renderMoney(){
+    const { moneyList } = this.state
+    if(moneyList !== ''){
+      let items = []
+      for(var i=0;i<moneyList.length;i++){
+        items.push(
+          // <View style={i%2 === 0 ? {backgroundColor:  '#fff', width: '100%',} : {backgroundColor:  '#ddd', width: '100%'}} key={i}>
+          <View style={{backgroundColor:  '#000', width: '100%'}} key={i}>
+            <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+              <Text style={styles.descTitle}>ว.ด.ป.</Text>
+              <Text style={styles.descValue}>010/90/80</Text>
+              <View style={{width: 10}}></View>
+              <Text style={styles.descTitle}>จำนวนเงิน</Text>
+              <Text style={styles.descValue}>40000</Text>
+            </View>
+            <View style={[styles.titleListDead,,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+              <Text style={{flex: 2, textAlign: 'center'}}>รายการ</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>จ่ายเงินสงเคราะห์</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>เงินสงเคราะห์ล่วงหน้าคงเหลือ</Text>
+            </View>
+        
+            <View style={[styles.titleListMoney,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+              <View style={[{flex: 2, borderRightWidth: 1, borderRightColor: '#545454'},i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+                <View style={[styles.listDesc,,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+                  <Text style={styles.descTitle}>เงินค่าสมัคร</Text>
+                  <Text style={styles.descValue}>-</Text>
+                </View>
+                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+                  <Text style={styles.descTitle}>เงินค่าบำรุง</Text>
+                  <Text style={styles.descValue}>-</Text>
+                </View>
+                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+                  <Text style={styles.descTitle}>เงินสงเคราะห์ล่วงหน้า</Text>
+                  <Text style={styles.descValue}>40000</Text>
+                </View>
+                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+                  <Text style={styles.descTitle}>เงินอื่นๆ</Text>
+                  <Text style={styles.descValue}>-</Text>
+                </View>
+                
+              </View>
+              <View style={[{flex: 1, borderRightWidth: 1, borderRightColor: '#545454'},i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+                  <Text style={styles.descTitle}>ศพที่</Text>
+                  <Text style={styles.descValue}>-</Text>
+                </View>
+                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
+                  <Text style={styles.descTitle}>เป็นเงิน</Text>
+                  <Text style={styles.descValue}>-</Text>
+                </View>
+              </View>
+              <Text style={{flex: 1, textAlign: 'center'}}>40000</Text>
+            </View>
+          </View>
+        )
+      }
+      return (
+        <View style={{alignItems: 'center', padding: 10, flex: 1}}>
+
+          {items}
+
+          <View style={styles.listDesc}>
+            <Text style={styles.descTitle}>เงินสงเคราะห์ล่วงหน้าคงเหลือ</Text>
+            <Text style={styles.descValue}>200000</Text>
+          </View>
+
+        </View>
+      )
+    }else{
+      return <Text>No data</Text>
+    }
+  }
+
+  static navigationOptions = ({ navigation }) => {
+    const { state: { params = {} } } = navigation;
+    return {
+      title: 'HOME',
+    };
+  }
+
+  render() {
+    // React.useLayoutEffect(() => {
+    //   navigation.setOptions({
+    //     headerLeft: () => (
+    //       <Text>MENU</Text>
+    //     ),
+    //   });
+    // }, [navigation]);
+    return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        {this.renderMoney()}
+      </ScrollView>
+    </SafeAreaView>
+    );
+  }
 }
 
-
-
-
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    title: {
-      fontSize: 30,
-      fontWeight: 'bold',
-    },
-    separator: {
-      marginVertical: 10,
-      height: 1,
-      width: '80%',
-    },
-  });
-  
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    margin: 10,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
+  },
+  images: {
+    height: 100,
+    width: 100,
+    borderRadius: 50
+  },
+  listDesc:{
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 5,
+  },
+  descTitle: {
+    color: '#545454',
+    marginRight: 5
+  },
+  descValue: {
+    flex: 1,
+    textAlign: "right"
+  },
+  titleListDead: {
+    flexDirection: 'row'
+  },
+  titleListMoney: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  }
+});
