@@ -19,42 +19,42 @@ export default class TabThreeScreen extends Component {
   }
 
   componentDidMount() {
-    this.getProFile()
+    this.getMemPay()
   }
 
-  getProFile =async()=> {
+  getMemPay =async()=> {
     let user = await AsyncStorage.getItem('userProject')
-    console.log(user)
-    let rr = [
-      {n:'0'},{n:'1'},{n:'2'}
-    ]
-    this.setState({moneyList: rr})
-    // if(user){
-    //   let users = JSON.parse(user)
-    //   let profiles = await api.getProfile(users.user_id)
-    //   console.log(profiles)
-    //   if(profiles.status === 200){
-    //     this.setState({moneyList: [{'0'},{'1'},{'2'}]})
-    //   }
-    // }else{
-    //   this.props.navigation.navigate('Login')
-    // } 
+    // let rr = [
+    //   {n:'0'},{n:'1'},{n:'2'}
+    // ]
+    // this.setState({moneyList: rr})
+    
+    if(user){
+      let users = JSON.parse(user)
+      let memberPay = await api.getMemberPay(users.user_id)
+      console.log(memberPay)
+      if(memberPay.status === 200){
+        this.setState({moneyList: memberPay.data})
+      }
+    } 
   }
 
   renderMoney(){
     const { moneyList } = this.state
     if(moneyList !== ''){
       let items = []
+      let amount = 0
       for(var i=0;i<moneyList.length;i++){
+        amount = amount+moneyList[i].money_pay4
         items.push(
           // <View style={i%2 === 0 ? {backgroundColor:  '#fff', width: '100%',} : {backgroundColor:  '#ddd', width: '100%'}} key={i}>
           <View style={{backgroundColor:  '#000', width: '100%'}} key={i}>
             <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
               <Text style={styles.descTitle}>ว.ด.ป.</Text>
-              <Text style={styles.descValue}>010/90/80</Text>
+              <Text style={styles.descValue}>{moneyList[i].date_to_pay}</Text>
               <View style={{width: 10}}></View>
               <Text style={styles.descTitle}>จำนวนเงิน</Text>
-              <Text style={styles.descValue}>40000</Text>
+              <Text style={styles.descValue}>{moneyList[i].money_pay4}</Text>
             </View>
             <View style={[styles.titleListDead,,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
               <Text style={{flex: 2, textAlign: 'center'}}>รายการ</Text>
@@ -70,11 +70,11 @@ export default class TabThreeScreen extends Component {
                 </View>
                 <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
                   <Text style={styles.descTitle}>เงินค่าบำรุง</Text>
-                  <Text style={styles.descValue}>-</Text>
+                  <Text style={styles.descValue}>{moneyList[i].money_pay2}</Text>
                 </View>
                 <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
                   <Text style={styles.descTitle}>เงินสงเคราะห์ล่วงหน้า</Text>
-                  <Text style={styles.descValue}>40000</Text>
+                  <Text style={styles.descValue}>{moneyList[i].money_pay4}</Text>
                 </View>
                 <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
                   <Text style={styles.descTitle}>เงินอื่นๆ</Text>
@@ -92,7 +92,7 @@ export default class TabThreeScreen extends Component {
                   <Text style={styles.descValue}>-</Text>
                 </View>
               </View>
-              <Text style={{flex: 1, textAlign: 'center'}}>40000</Text>
+              <Text style={{flex: 1, textAlign: 'center'}}>{moneyList[i].money_pay4}</Text>
             </View>
           </View>
         )
@@ -104,7 +104,7 @@ export default class TabThreeScreen extends Component {
 
           <View style={styles.listDesc}>
             <Text style={styles.descTitle}>เงินสงเคราะห์ล่วงหน้าคงเหลือ</Text>
-            <Text style={styles.descValue}>200000</Text>
+            <Text style={styles.descValue}>{amount}</Text>
           </View>
 
         </View>
@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
   },
   descTitle: {
     color: '#545454',
-    marginRight: 5
+    marginRight: 5,
+    flex: 1
   },
   descValue: {
     flex: 1,
