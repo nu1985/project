@@ -209,7 +209,7 @@ export default class TabSettingScreen extends Component {
         transparent={true}
         visible={this.state.modalPass}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+          // Alert.alert("Modal has been closed.");
         }}
         >
           <View style={styles.centeredView}>

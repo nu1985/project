@@ -17,7 +17,8 @@ const create = (baseURL = url) => {
   const updateUser = (data) => api.put('/user/me',data)
   const changePass = (data) => api.post('/user/password/change',data)
 
-  const getMemberPay = (id) => api.get('/member_pay?where=(member_id,like,'+id+')')
+  const getMemberPay = (id) => api.get('/member_pay?sort=YPay&where=(member_id,like,'+id+')')
+  const getMemberPayTwo = () => api.get('/member_pay_2?limit=2000')
 
   return {
     login,
@@ -28,6 +29,7 @@ const create = (baseURL = url) => {
     updateUser,
     changePass,
     getMemberPay,
+    getMemberPayTwo,
   }
 }
 

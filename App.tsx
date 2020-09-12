@@ -7,6 +7,8 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import Login from './screens/TabLoginScreen'
 
+console.disableYellowBox = true;
+
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();

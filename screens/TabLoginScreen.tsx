@@ -64,7 +64,7 @@ export default class TabLoginScreen extends Component {
             <TextInput
               style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
               onChangeText={text=> this.setState({user: text})}
-              value={this.state.user} 
+              value={this.state.user}
               placeholder="หมายเลขฌาปนกิจ"
             />
 
@@ -74,6 +74,7 @@ export default class TabLoginScreen extends Component {
               onChangeText={text=> this.setState({password: text})}
               value={this.state.password}
               placeholder="รหัสผ่าน"
+              // autoFocus={true}
             />
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
             <TouchableOpacity onPress={()=> this.onSignin()} style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#007bff', borderRadius: 5}}>

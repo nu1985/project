@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, AsyncStorage, Button, SafeAreaView, ScrollView,Image} from 'react-native';
+import { StyleSheet, AsyncStorage, Button, SafeAreaView, ScrollView,Image, Alert} from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import API from '../API'
@@ -14,97 +14,74 @@ export default class TabThreeScreen extends Component {
   constructor() {
     super();
     this.state = {
-      moneyList: ''
+      moneyList: '',
+      payList: [],
     }
   }
 
   componentDidMount() {
     this.getMemPay()
+    this.getMemPayTwo()
   }
 
   getMemPay =async()=> {
     let user = await AsyncStorage.getItem('userProject')
-    // let rr = [
-    //   {n:'0'},{n:'1'},{n:'2'}
-    // ]
-    // this.setState({moneyList: rr})
-    
     if(user){
       let users = JSON.parse(user)
       let memberPay = await api.getMemberPay(users.user_id)
-      console.log(memberPay)
+      // console.log(memberPay.data)
       if(memberPay.status === 200){
         this.setState({moneyList: memberPay.data})
       }
     } 
   }
 
+  getMemPayTwo =async()=> {
+    let pay = await api.getMemberPayTwo()
+    // console.log(pay.data)
+    if(pay.status === 200){
+      this.setState({payList: pay.data})
+    }
+  }
+
   renderMoney(){
-    const { moneyList } = this.state
+    const { moneyList, amountList } = this.state
     if(moneyList !== ''){
       let items = []
-      let amount = 0
+      let newAmt = 0
       for(var i=0;i<moneyList.length;i++){
-        amount = amount+moneyList[i].money_pay4
+        let dPay = moneyList[i].DPay
+        let mPay = moneyList[i].MPay
+        let yPay = moneyList[i].YPay
+        let money_pay4 = moneyList[i].money_pay4
         items.push(
-          // <View style={i%2 === 0 ? {backgroundColor:  '#fff', width: '100%',} : {backgroundColor:  '#ddd', width: '100%'}} key={i}>
-          <View style={{backgroundColor:  '#000', width: '100%'}} key={i}>
-            <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-              <Text style={styles.descTitle}>ว.ด.ป.</Text>
-              <Text style={styles.descValue}>{moneyList[i].date_to_pay}</Text>
-              <View style={{width: 10}}></View>
-              <Text style={styles.descTitle}>จำนวนเงิน</Text>
-              <Text style={styles.descValue}>{moneyList[i].money_pay4}</Text>
+          <View style={{width: '100%'}} key={'mone'+i}>
+            <View style={[styles.titleListMoney,{backgroundColor:  '#fff'}]}>
+              <Text style={[styles.descValue,{textAlign: 'left', padding: 3}]}>{moneyList[i].date_to_pay}</Text>
+              <Text style={[styles.descValue,{padding: 3}]}>{moneyList[i].money_pay4.toFixed(2)}</Text>
+              <Text style={[styles.descValue,{padding: 3}]}>-</Text>
+              <Text style={[styles.descValue,{padding: 3}]}>{moneyList[i].money_pay4.toFixed(2)}</Text>
             </View>
-            <View style={[styles.titleListDead,,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-              <Text style={{flex: 2, textAlign: 'center'}}>รายการ</Text>
-              <Text style={{flex: 1, textAlign: 'center'}}>จ่ายเงินสงเคราะห์</Text>
-              <Text style={{flex: 1, textAlign: 'center'}}>เงินสงเคราะห์ล่วงหน้าคงเหลือ</Text>
-            </View>
-        
-            <View style={[styles.titleListMoney,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-              <View style={[{flex: 2, borderRightWidth: 1, borderRightColor: '#545454'},i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-                <View style={[styles.listDesc,,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-                  <Text style={styles.descTitle}>เงินค่าสมัคร</Text>
-                  <Text style={styles.descValue}>-</Text>
-                </View>
-                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-                  <Text style={styles.descTitle}>เงินค่าบำรุง</Text>
-                  <Text style={styles.descValue}>{moneyList[i].money_pay2}</Text>
-                </View>
-                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-                  <Text style={styles.descTitle}>เงินสงเคราะห์ล่วงหน้า</Text>
-                  <Text style={styles.descValue}>{moneyList[i].money_pay4}</Text>
-                </View>
-                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-                  <Text style={styles.descTitle}>เงินอื่นๆ</Text>
-                  <Text style={styles.descValue}>-</Text>
-                </View>
-                
-              </View>
-              <View style={[{flex: 1, borderRightWidth: 1, borderRightColor: '#545454'},i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-                  <Text style={styles.descTitle}>ศพที่</Text>
-                  <Text style={styles.descValue}>-</Text>
-                </View>
-                <View style={[styles.listDesc,i%2 === 0 ? {backgroundColor:  '#fff'} : {backgroundColor:  '#ddd'}]}>
-                  <Text style={styles.descTitle}>เป็นเงิน</Text>
-                  <Text style={styles.descValue}>-</Text>
-                </View>
-              </View>
-              <Text style={{flex: 1, textAlign: 'center'}}>{moneyList[i].money_pay4}</Text>
-            </View>
+            {this.rederPaylist(dPay,mPay,yPay,money_pay4)}
           </View>
         )
+        newAmt = newAmt + this.amtPaylist(dPay,mPay,yPay,money_pay4)
       }
+      
       return (
-        <View style={{alignItems: 'center', padding: 10, flex: 1}}>
-
+        <View style={{alignItems: 'center', flex: 1}}>
+          <View style={[styles.listDesc,{backgroundColor:  '#545454'}]}>
+            <Text style={{flex: 1, textAlign: 'center', color: '#fff'}}>ว.ด.ป.</Text>
+            <Text style={{flex: 1, textAlign: 'center', color: '#fff'}}>จำนวนเงิน</Text>
+            <Text style={{flex: 1, textAlign: 'center', color: '#fff'}}>จ่ายเงินสงเคราะห์</Text>
+            <Text style={{flex: 1, textAlign: 'center', color: '#fff'}}>คงเหลือ</Text>
+          </View>
+          
           {items}
 
           <View style={styles.listDesc}>
             <Text style={styles.descTitle}>เงินสงเคราะห์ล่วงหน้าคงเหลือ</Text>
-            <Text style={styles.descValue}>{amount}</Text>
+            <Text style={styles.descValue}>{newAmt.toFixed(2)}</Text>
           </View>
 
         </View>
@@ -112,6 +89,61 @@ export default class TabThreeScreen extends Component {
     }else{
       return <Text>No data</Text>
     }
+  }
+
+  rederPaylist(dPay,mPay,yPay,moneys){
+    const {payList} =this.state
+    let newPay = []
+    for(var i=0;i<payList.length;i++){
+      if(payList[i].YPay === yPay){
+        if(payList[i].MPay > mPay){
+          newPay.push(payList[i])
+        }else{
+          if(payList[i].MPay === mPay && payList[i].DPay > dPay){
+            newPay.push(payList[i])
+          }
+        }
+      }
+    }
+    let items = []
+    let amount = moneys
+    for(var i=0;i<newPay.length;i++){
+      amount = amount - newPay[i].money_pay3
+      items.push(
+        <View style={[styles.titleListMoney,{backgroundColor: '#ddd'}]} key={'pay'+i}>
+          <Text style={[styles.descValue,{textAlign: 'left', padding: 3}]}>{newPay[i].date_to_pay}</Text>
+          <Text style={[styles.descValue,{padding: 3}]}>-</Text>
+          <Text style={[styles.descValue,{padding: 3}]}>{newPay[i].money_pay3.toFixed(2)}</Text>
+          <Text style={[styles.descValue,{padding: 3}]}>{amount.toFixed(2)}</Text>
+        </View>
+      )
+    }
+    return items
+  }
+
+  amtPaylist(dPay,mPay,yPay,moneys){
+    const {payList} =this.state
+    let newPay = []
+    for(var i=0;i<payList.length;i++){
+      if(payList[i].YPay === yPay){
+        if(payList[i].MPay > mPay){
+          newPay.push(payList[i])
+        }else{
+          if(payList[i].MPay === mPay && payList[i].DPay > dPay){
+            newPay.push(payList[i])
+          }
+        }
+      }
+    }
+    let newAmt = 0
+    let amount = moneys
+    for(var i=0;i<newPay.length;i++){
+      amount = amount - newPay[i].money_pay3
+      if(i === newPay.length-1){
+        newAmt = newAmt+amount
+      }
+    }
+    return newAmt
   }
 
   static navigationOptions = ({ navigation }) => {

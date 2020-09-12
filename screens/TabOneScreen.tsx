@@ -1,12 +1,13 @@
 // import * as React from 'react';
 import React, { Component } from 'react';
-import { StyleSheet, AsyncStorage, Button, SafeAreaView, ScrollView,Image,TouchableOpacity,Linking} from 'react-native';
+import { StyleSheet, AsyncStorage, Button, SafeAreaView, ScrollView,Image, TouchableOpacity, Linking, Modal} from 'react-native';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import API from '../API'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Constants from 'expo-constants';
+import { WebView } from 'react-native-webview';
 
 const api = API.create()
 
@@ -16,28 +17,54 @@ export default class TabOneScreen extends Component {
     super();
     this.state = {
         profile: '',
-        txtStatus: ''
+        txtStatus: '',
+        modalQr: false,
+        qrUrl: '',
+        payStatus: ''
     }
   }
 
   componentDidMount =async()=> {
     await this.getProFile()
     this.getStatus()
+    this.getMemPay()
   }
 
   getProFile =async()=> {
     let user = await AsyncStorage.getItem('userProject')
-    console.log(user)
+    // console.log(user)
     if(user){
       let users = JSON.parse(user)
       let profiles = await api.getProfile(users.user_id)
-    console.log(profiles)
+    // console.log(profiles)
       if(profiles.status === 200){
         this.setState({profile: profiles.data})
       }
     }else{
       this.props.navigation.navigate('Login')
     } 
+  }
+
+  getMemPay =async()=> {
+    const {profile} =this.state
+    let yy = (new Date().getFullYear()) + 543
+    // console.log(yy)
+    let memberPay = await api.getMemberPay(profile.member_id)
+    // console.log(memberPay)
+    if(memberPay.status === 200){
+      let isPay = false
+      for(var i=0;i<memberPay.data.length;i++){
+        if(memberPay.data[i].YPay === yy){
+          isPay = true
+        }
+      }
+
+      if(isPay){
+        this.setState({payStatus: 'ตรวจสอบการชำระแล้ว'})
+      }else{
+        this.setState({payStatus: 'ยังไม่ตรวจสอบการชำระ'})
+      }
+    }
   }
 
   getStatus =async()=> {
@@ -57,11 +84,15 @@ export default class TabOneScreen extends Component {
   pressQrcode(){
     const {profile} = this.state
     let url = 'http://ca-comil.online/aspdata/printrecive_QRAPI_php.php?member_id='+profile.member_id+'&dead_pay1='+profile.dead_pay1+'&dead_pay2='+profile.dead_pay2
-    Linking.openURL(url);
+    this.setState({
+      modalQr: true,
+      qrUrl: url
+    })
+    // Linking.openURL(url);
   }
 
   renderProfile(){
-    const { profile } = this.state
+    const { profile, payStatus } = this.state
     if(profile !== ''){
       return (
         <View style={{alignItems: 'center', padding: 10}}>
@@ -129,11 +160,7 @@ export default class TabOneScreen extends Component {
 
           <View style={styles.listDesc}>
             <Text style={styles.descTitle}>สถานะการชำระ</Text>
-            {profile.pay_check === "1" ? 
-            <Text style={styles.descValue}>ตรวจสอบการชำระแล้ว</Text>
-            :
-            <Text style={styles.descValue}>ยังไม่ตรวจสอบการชำระ</Text>
-            }
+            <Text style={styles.descValue}>{payStatus}</Text>
           </View>
 
           <TouchableOpacity onPress={()=> this.pressQrcode()} style={{marginTop: 40 , alignItems: 'center'}}>
@@ -167,6 +194,23 @@ export default class TabOneScreen extends Component {
       <ScrollView style={styles.scrollView}>
         {this.renderProfile()}
       </ScrollView>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={this.state.modalQr}
+        onRequestClose={() => {
+          // Alert.alert("Modal has been closed.");
+        }}
+        >
+          <WebView source={{ uri: this.state.qrUrl }} />
+          <View style={{backgroundColor: '#fff', padding: 20}}>
+            <TouchableOpacity onPress={()=> this.setState({modalQr: false})} style={styles.btClose}>
+              <Text style={{fontSize: 18, color: '#fff'}}>CLOSE</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
     </SafeAreaView>
     );
   }
@@ -206,6 +250,36 @@ const styles = StyleSheet.create({
   },
   descValue: {
     flex: 1
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  btClose: {
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    backgroundColor: '#007bff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 10
   }
 });
 
