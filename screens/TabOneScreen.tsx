@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Constants from 'expo-constants';
 import { WebView } from 'react-native-webview';
+import ImageSlider from 'react-native-image-slider';
 
 const api = API.create()
 
@@ -21,7 +22,9 @@ export default class TabOneScreen extends Component {
         modalQr: false,
         qrUrl: '',
         payStatus: '',
-        numpay: ''
+        numpay: '',
+
+        gallary: []
     }
   }
 
@@ -30,6 +33,8 @@ export default class TabOneScreen extends Component {
     this.getStatus()
     this.getMemPay()
     this.getNumpay()
+
+    this.setGallary()
   }
 
   getProFile =async()=> {
@@ -116,6 +121,7 @@ export default class TabOneScreen extends Component {
     if(profile !== ''){
       return (
         <View style={{alignItems: 'center', padding: 10}}>
+          
           <Image source={require('./images/account.png')} style={styles.images} resizeMode="cover"/>
 
           <View style={styles.listDesc}>
@@ -201,6 +207,16 @@ export default class TabOneScreen extends Component {
     };
   }
 
+  setGallary(){
+    let gr = [
+      'http://i.imgur.com/XP2BE7q.jpg',
+      'http://i.imgur.com/5nltiUd.jpg',
+      'http://i.imgur.com/6vOahbP.jpg',
+      'http://i.imgur.com/kj5VXtG.jpg'
+    ]
+    this.setState({gallary: gr})
+  }
+
   render() {
     // React.useLayoutEffect(() => {
     //   navigation.setOptions({
@@ -212,6 +228,13 @@ export default class TabOneScreen extends Component {
     return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
+        <View style={{width: '100%', height: 200}}>
+          <ImageSlider 
+            loopBothSides
+            autoPlayWithInterval={5000}
+            images={this.state.gallary}
+          />
+        </View>
         {this.renderProfile()}
       </ScrollView>
 
@@ -241,7 +264,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollView: {
-    margin: 10,
+    // margin: 10,
   },
   title: {
     fontSize: 20,
