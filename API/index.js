@@ -20,6 +20,8 @@ const create = (baseURL = url) => {
   const getMemberPay = (id) => api.get('/member_pay?sort=YPay&where=(member_id,like,'+id+')')
   const getMemberPayTwo = () => api.get('/member_pay_2?limit=2000')
 
+  const getNumPay = () => api.get('/numpay_years?limit=2000')
+
   return {
     login,
     signup,
@@ -30,6 +32,7 @@ const create = (baseURL = url) => {
     changePass,
     getMemberPay,
     getMemberPayTwo,
+    getNumPay,
   }
 }
 

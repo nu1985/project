@@ -79,7 +79,7 @@ export default class TabSettingScreen extends Component {
 
   onEdit =async()=> {
     if(this.state.name === '') return Alert.alert('','กรุณากรอกชื่อผู้ลงทะเบียน')
-    if(this.state.lname === '') return Alert.alert('','กรุณากรอกนามสกุล')
+    // if(this.state.lname === '') return Alert.alert('','กรุณากรอกนามสกุล')
     // if(this.state.id13 === '') return Alert.alert('','กรุณากรอกหมายเลข ปชช.')
     if(this.state.email === '') return Alert.alert('','กรุณากรอก Email')
     if(this.state.tel === '') return Alert.alert('','กรุณากรอกเบอร์โทร')
@@ -89,7 +89,7 @@ export default class TabSettingScreen extends Component {
     this.setState({isLoading: true})
     let data = {
       firstname: this.state.name,
-      lastname: this.state.lname,
+      // lastname: this.state.lname,
       email: this.state.email,
       provider_data : this.state.tel
     }
@@ -137,13 +137,13 @@ export default class TabSettingScreen extends Component {
               placeholder="ชื่อผู้ลงทะเบียน"
             />
 
-            <Text style={styles.title}>นามสกุล</Text>
+            {/* <Text style={styles.title}>นามสกุล</Text>
             <TextInput
               style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
               onChangeText={text=> this.setState({lname: text})}
               value={this.state.lname} 
               placeholder="นามสกุล"
-            />
+            /> */}
 
             <Text style={styles.title}>หมายเลข ปชช.</Text>
             <TextInput

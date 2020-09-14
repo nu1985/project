@@ -15,7 +15,8 @@ export default class TabTwoScreen extends Component {
     super();
     this.state = {
         profile: '',
-        txtStatus: ''
+        txtStatus: '',
+        payStatus: '',
     }
   }
 

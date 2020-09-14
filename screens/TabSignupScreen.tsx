@@ -28,7 +28,7 @@ export default class TabSignupScreen extends Component {
 
   onSignup =async()=> {
     if(this.state.name === '') return Alert.alert('','กรุณากรอกชื่อผู้ลงทะเบียน')
-    if(this.state.lname === '') return Alert.alert('','กรุณากรอกนามสกุล')
+    // if(this.state.lname === '') return Alert.alert('','กรุณากรอกนามสกุล')
     if(this.state.id13 === '') return Alert.alert('','กรุณากรอกหมายเลข ปชช.')
     if(this.state.email === '') return Alert.alert('','กรุณากรอก Email')
     if(this.state.tel === '') return Alert.alert('','กรุณากรอกเบอร์โทร')
@@ -38,7 +38,7 @@ export default class TabSignupScreen extends Component {
     this.setState({isLoading: true})
     let data = {
       firstname: this.state.name,
-      lastname: this.state.lname,
+      // lastname: this.state.lname,
       email: this.state.email,
       username: this.state.user,
       password: this.state.password,
@@ -49,14 +49,10 @@ export default class TabSignupScreen extends Component {
     this.setState({isLoading: false})
     console.log(signup)
     if(signup.status === 200){
-      let user ={
-        user: signup.data,
-        user_id: '230'
-      }
-      await AsyncStorage.setItem('userProject',JSON.stringify(user))
-      this.props.navigation.navigate('Root')
+      Alert.alert('Success')
+      this.props.navigation.navigate('Login')
     }else{
-      Alert.alert('Login fail',signup.data.msg)
+      Alert.alert('Signup fail',signup.data.msg)
     }
   }
 
@@ -78,17 +74,18 @@ export default class TabSignupScreen extends Component {
               placeholder="ชื่อผู้ลงทะเบียน"
             />
 
-            <Text style={styles.title}>นามสกุล</Text>
+            {/* <Text style={styles.title}>นามสกุล</Text>
             <TextInput
               style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
               onChangeText={text=> this.setState({lname: text})}
               value={this.state.lname} 
               placeholder="นามสกุล"
-            />
+            /> */}
 
             <Text style={styles.title}>หมายเลข ปชช.</Text>
             <TextInput
               keyboardType="number-pad"
+              maxLength={13}
               style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
               onChangeText={text=> this.setState({id13: text})}
               value={this.state.id13} 

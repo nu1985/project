@@ -18,11 +18,17 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "ios": {
+      "bundleIdentifier": "com.ca.comil",
+      "buildNumber": "1.0.0",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.ca.comil",
+      "versionCode": 1
     }
   }
 }

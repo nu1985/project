@@ -20,7 +20,8 @@ export default class TabOneScreen extends Component {
         txtStatus: '',
         modalQr: false,
         qrUrl: '',
-        payStatus: ''
+        payStatus: '',
+        numpay: ''
     }
   }
 
@@ -28,6 +29,7 @@ export default class TabOneScreen extends Component {
     await this.getProFile()
     this.getStatus()
     this.getMemPay()
+    this.getNumpay()
   }
 
   getProFile =async()=> {
@@ -81,6 +83,24 @@ export default class TabOneScreen extends Component {
     }
   }
 
+  getNumpay =async()=> {
+    const {profile} = this.state
+    let numpay = await api.getNumPay()
+    if(numpay.status === 200){
+      let numpas = numpay.data
+      for(var i =0;i<numpas.length;i++){
+        if((numpas[i].datefirst_pay == profile.datefirst_pay) && (numpas[i].yearsfirst_pay == profile.yearsfirst_pay)){
+          let yy = 'ต้นปี'
+          if(numpas[i].years_pay_num > 1){
+            yy = 'ระหว่างปี'
+          }
+          let text = 'รอบ ต้นปี-'+numpas[i].years_pay+'  เรียกเก็บ '+numpas[i].mon4_years+' บาท'
+          this.setState({numpay: text})
+        }
+      }
+    }
+  }
+
   pressQrcode(){
     const {profile} = this.state
     let url = 'http://ca-comil.online/aspdata/printrecive_QRAPI_php.php?member_id='+profile.member_id+'&dead_pay1='+profile.dead_pay1+'&dead_pay2='+profile.dead_pay2
@@ -92,7 +112,7 @@ export default class TabOneScreen extends Component {
   }
 
   renderProfile(){
-    const { profile, payStatus } = this.state
+    const { profile, payStatus, numpay } = this.state
     if(profile !== ''){
       return (
         <View style={{alignItems: 'center', padding: 10}}>
@@ -155,7 +175,7 @@ export default class TabOneScreen extends Component {
 
           <View style={styles.listDesc}>
             <Text style={styles.descTitle}>เงินคงสภาพ</Text>
-            <Text style={styles.descValue}>{'รอบ ต้นปี-'+profile.years_up+'  เรียกเก็บ '+profile.money_before+' บาท'}</Text>
+            <Text style={styles.descValue}>{numpay}</Text>
           </View>
 
           <View style={styles.listDesc}>
