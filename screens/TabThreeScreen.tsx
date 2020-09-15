@@ -60,12 +60,12 @@ export default class TabThreeScreen extends Component {
               <Text style={[styles.descValue,{textAlign: 'left', padding: 3}]}>{moneyList[i].date_to_pay}</Text>
               <Text style={[styles.descValue,{padding: 3}]}>{moneyList[i].money_pay4.toFixed(2)}</Text>
               <Text style={[styles.descValue,{padding: 3}]}>-</Text>
-              <Text style={[styles.descValue,{padding: 3}]}>{moneyList[i].money_pay4.toFixed(2)}</Text>
+              <Text style={[styles.descValue,{padding: 3}]}>{(moneyList[i].money_pay4+newAmt).toFixed(2)}</Text>
             </View>
-            {this.rederPaylist(dPay,mPay,yPay,money_pay4)}
+            {this.rederPaylist(dPay,mPay,yPay,money_pay4+newAmt)}
           </View>
         )
-        newAmt = newAmt + this.amtPaylist(dPay,mPay,yPay,money_pay4)
+        newAmt = this.amtPaylist(dPay,mPay,yPay,money_pay4+newAmt)
       }
       
       return (
