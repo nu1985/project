@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet,TextInput,Image,Button,AsyncStorage,TouchableOpacity,Alert,SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet,TextInput,Image,Button,AsyncStorage,TouchableOpacity,Alert,SafeAreaView, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import API from '../API'
@@ -54,12 +54,12 @@ export default class TabLoginScreen extends Component {
   render(){
     return (
       <SafeAreaView style={{flex: 1}}>
-        <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+        {/* <ScrollView style={{flex: 1, backgroundColor: '#fff'}}> */}
+        
           <View style={styles.container}>
-
             <Image source={require('./images/logo.png')} style={styles.images} resizeMode="cover"/>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-
+            
             <Text style={styles.title}>หมายเลขฌาปนกิจ</Text>
             <TextInput
               style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
@@ -69,24 +69,27 @@ export default class TabLoginScreen extends Component {
             />
 
             <Text style={styles.title}>รหัสผ่าน</Text>
-            <TextInput
-              style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
-              onChangeText={text=> this.setState({password: text})}
-              value={this.state.password}
-              placeholder="รหัสผ่าน"
-              // autoFocus={true}
-            />
+              <TextInput
+                style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
+                onChangeText={text=> this.setState({password: text})}
+                value={this.state.password}
+                placeholder="รหัสผ่าน"
+                // autoFocus={true}
+              />
+            
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
             <TouchableOpacity onPress={()=> this.onSignin()} style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#007bff', borderRadius: 5}}>
               <Text style={{fontSize: 18, color: '#fff'}}>Sing In</Text>
             </TouchableOpacity>
-
+            
             <TouchableOpacity onPress={()=> this.props.navigation.navigate('Signup')} style={{paddingVertical: 10, paddingHorizontal: 20, marginTop: 20}}>
               <Text style={{fontSize: 18, color: '#007bff'}}>Sing Up</Text>
             </TouchableOpacity>
 
           </View>
-        </ScrollView>
+          
+         {/* </ScrollView> */}
       </SafeAreaView>
     );
   }
@@ -112,7 +115,7 @@ const styles = StyleSheet.create({
     images: {
       width: 180,
       height: 180,
-      marginTop: 100
+      marginTop: 80
     },
     btSignin: {
       padding: 5,
