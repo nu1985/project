@@ -43,7 +43,7 @@ export default class TabOneScreen extends Component {
     if(user){
       let users = JSON.parse(user)
       let profiles = await api.getProfile(users.user_id)
-    // console.log(profiles)
+    console.log(profiles)
       if(profiles.status === 200){
         this.setState({profile: profiles.data})
       }
@@ -209,10 +209,10 @@ export default class TabOneScreen extends Component {
 
   setGallary(){
     let gr = [
-      'http://i.imgur.com/XP2BE7q.jpg',
-      'http://i.imgur.com/5nltiUd.jpg',
-      'http://i.imgur.com/6vOahbP.jpg',
-      'http://i.imgur.com/kj5VXtG.jpg'
+      'http://ca-comil.net/images_slide/1.jpg',
+      'http://ca-comil.net/images_slide/2.jpg',
+      'http://ca-comil.net/images_slide/3.jpg',
+      'http://ca-comil.net/images_slide/4.jpg'
     ]
     this.setState({gallary: gr})
   }
@@ -261,7 +261,7 @@ export default class TabOneScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   scrollView: {
     // margin: 10,
