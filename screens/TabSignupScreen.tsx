@@ -45,6 +45,7 @@ export default class TabSignupScreen extends Component {
       provider_ids : this.state.id13,
       provider_data : this.state.tel
     }
+  //console.log(data)
     let signup = await api.signup(data)
     this.setState({isLoading: false})
     console.log(signup)
@@ -63,7 +64,7 @@ export default class TabSignupScreen extends Component {
 
           <View style={styles.container}>
 
-            <Text style={{fontSize: 22, fontWeight: 'bold', marginTop: 20}}>ลงทะเบียน</Text>
+            <Text style={{fontSize: 22, fontWeight: 'bold', marginTop: 50}}>ลงทะเบียน</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
             <Text style={styles.title}>ชื่อผู้ลงทะเบียน</Text>
