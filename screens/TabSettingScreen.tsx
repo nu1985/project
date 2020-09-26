@@ -191,7 +191,7 @@ export default class TabSettingScreen extends Component {
               placeholder="รหัสผ่าน"
             /> */}
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-            <TouchableOpacity onPress={()=> this.onEdit()} style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#007bff', borderRadius: 5, marginTop: 20}}>
+            <TouchableOpacity onPress={()=> this.onEdit()} style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#FF4B2B', borderRadius: 20, marginTop: 20}}>
               <Text style={{fontSize: 18, color: '#fff'}}>แก้ไขข้อมูล</Text>
             </TouchableOpacity>
 

@@ -89,7 +89,7 @@ function TabOneNavigator({navigation}) {
         name="TabOneScreen"
         component={TabOneScreen}
         options={{
-          headerTitle: 'หน้าหลัก',
+          headerTitle: () => (<Text style={{flex: 1, textAlign: 'center', color: '#fff', fontSize: 18}}>หน้าหลัก</Text>),
           headerLeft: () => (<Text></Text>),
           headerRight: () => (
             <TouchableOpacity style={{padding: 5}} onPress={async()=> {
@@ -118,7 +118,7 @@ function TabTwoNavigator({navigation}) {
         name="TabTwoScreen"
         component={TabTwoScreen}
         options={{ 
-          headerTitle: 'สมาชิก',
+          headerTitle: () => (<Text style={{flex: 1, textAlign: 'center', color: '#fff', fontSize: 18}}>สมาชิก</Text>),
           headerLeft: () => (<Text></Text>),
           headerRight: () => (
             <TouchableOpacity style={{padding: 5}} onPress={async()=> {
@@ -148,7 +148,7 @@ function TabThreeNavigator({navigation}) {
         name="TabThreeScreen"
         component={TabThreeScreen}
         options={{ 
-          headerTitle: 'รายการชำระเงิน',
+          headerTitle: () => (<Text style={{flex: 1, textAlign: 'center', color: '#fff', fontSize: 18}}>รายการชำระเงิน</Text>),
           headerLeft: () => (<Text></Text>),
           headerRight: () => (
             <TouchableOpacity style={{padding: 5}} onPress={async()=> {
@@ -179,7 +179,7 @@ function TabSettingNavigator({navigation}) {
         name="TabSettingScreen"
         component={TabSettingScreen}
         options={{ 
-          headerTitle: 'ตั้งค่าข้อมูล',
+          headerTitle: () => (<Text style={{flex: 1, textAlign: 'center', color: '#fff', fontSize: 18}}>ตั้งค่าข้อมูล</Text>),
           headerLeft: () => (<Text></Text>),
           headerRight: () => (
             <TouchableOpacity style={{padding: 5}} onPress={async()=> {
