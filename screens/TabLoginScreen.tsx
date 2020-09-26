@@ -79,7 +79,7 @@ export default class TabLoginScreen extends Component {
             
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-            <TouchableOpacity onPress={()=> this.onSignin()} style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#007bff', borderRadius: 5}}>
+            <TouchableOpacity onPress={()=> this.onSignin()} style={{paddingVertical: 10, paddingHorizontal: 30, backgroundColor: '#FF4B2B', borderRadius: 20}}>
               <Text style={{fontSize: 18, color: '#fff'}}>Sing In</Text>
             </TouchableOpacity>
             

@@ -13,6 +13,7 @@ import TabSettingScreen from '../screens/TabSettingScreen';
 import { Button,Text,TouchableOpacity,AsyncStorage } from 'react-native';
 
 import { BottomTabParamList, TabOneParamList, TabTwoParamList, TabThreeParamList, TabLoginParamList , TabSignupParamList } from '../types';
+import { View } from '../components/Themed';
 
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -26,7 +27,12 @@ export default function BottomTabNavigator() {
     <BottomTab.Navigator
       
     initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{ 
+        activeTintColor: '#80e5ff',
+        inactiveTintColor: '#fff',
+        activeBackgroundColor: '#cc66ff',
+        inactiveBackgroundColor: '#cc66ff'
+        }}>
       <BottomTab.Screen
         name="Home"
         component={TabOneNavigator}
@@ -90,9 +96,13 @@ function TabOneNavigator({navigation}) {
               await AsyncStorage.removeItem('userProject')
               navigation.navigate('Login')
             }}>
-              <TabBarIcon name="ios-log-out"/>
+              <TabBarIcon name="ios-log-out" color='#fff'/>
             </TouchableOpacity>
           ),
+          headerStyle: {
+            backgroundColor: '#cc66ff',
+          },
+          headerTintColor: '#fff',
         }}
       />
     </TabOneStack.Navigator>
@@ -115,9 +125,13 @@ function TabTwoNavigator({navigation}) {
               await AsyncStorage.removeItem('userProject')
               navigation.navigate('Login')
             }}>
-              <TabBarIcon name="ios-log-out"/>
+              <TabBarIcon name="ios-log-out" color='#fff'/>
             </TouchableOpacity>
           ),
+          headerStyle: {
+            backgroundColor: '#cc66ff',
+          },
+          headerTintColor: '#fff',
         }}
       />
     </TabTwoStack.Navigator>
@@ -141,9 +155,13 @@ function TabThreeNavigator({navigation}) {
               await AsyncStorage.removeItem('userProject')
               navigation.navigate('Login')
             }}>
-              <TabBarIcon name="ios-log-out"/>
+              <TabBarIcon name="ios-log-out" color='#fff'/>
             </TouchableOpacity>
           ),
+          headerStyle: {
+            backgroundColor: '#cc66ff',
+          },
+          headerTintColor: '#fff',
         }}
       />
     </TabThreeStack.Navigator>
@@ -168,9 +186,13 @@ function TabSettingNavigator({navigation}) {
               await AsyncStorage.removeItem('userProject')
               navigation.navigate('Login')
             }}>
-              <TabBarIcon name="ios-log-out"/>
+              <TabBarIcon name="ios-log-out" color='#fff'/>
             </TouchableOpacity>
           ),
+          headerStyle: {
+            backgroundColor: '#cc66ff',
+          },
+          headerTintColor: '#fff',
         }}
       />
     </TabSettingStack.Navigator>
