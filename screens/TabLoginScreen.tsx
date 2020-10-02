@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import API from '../API'
 import { Text, View } from '../components/Themed';
 import ImageSlider from 'react-native-image-slider';
+import { FontAwesome,MaterialCommunityIcons } from '@expo/vector-icons';
 
 const api = API.create()
 
@@ -95,21 +96,27 @@ export default class TabLoginScreen extends Component {
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
             <View style={{alignSelf: 'flex-start', paddingHorizontal: 50}}>
               <Text style={styles.title}>หมายเลขฌาปนกิจ</Text>
-              <TextInput
-                style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
-                onChangeText={text=> this.setState({user: text})}
-                value={this.state.user}
-                placeholder="หมายเลขฌาปนกิจ"
-              />
+              <View style={{flexDirection: 'row'}}>
+                <TextInput
+                  style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5, paddingLeft: 35}}
+                  onChangeText={text=> this.setState({user: text})}
+                  value={this.state.user}
+                  placeholder="หมายเลขฌาปนกิจ"
+                />
+                <FontAwesome name="user-circle-o" size={24} color="#cc66ff" style={{position: 'absolute', left: 5, alignSelf: 'center'}}/>
+              </View>
 
               <Text style={styles.title}>รหัสผ่าน</Text>
-              <TextInput
-                style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
-                onChangeText={text=> this.setState({password: text})}
-                value={this.state.password}
-                placeholder="รหัสผ่าน"
-                // autoFocus={true}
-              />
+              <View style={{flexDirection: 'row'}}>
+                <TextInput
+                  style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5, paddingLeft: 35}}
+                  onChangeText={text=> this.setState({password: text})}
+                  value={this.state.password}
+                  placeholder="รหัสผ่าน"
+                  // autoFocus={true}
+                />
+                <MaterialCommunityIcons name="shield-key-outline" size={24} color="#cc66ff" style={{position: 'absolute', left: 5, alignSelf: 'center'}}/>
+              </View>
             </View>
             
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />

@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import API from '../API'
 import { Text, View } from '../components/Themed';
+import { FontAwesome,MaterialCommunityIcons,AntDesign,Entypo } from '@expo/vector-icons';
 
 const api = API.create()
 
@@ -129,58 +130,66 @@ export default class TabSettingScreen extends Component {
 
           <View style={styles.container}>
 
-            <Text style={[styles.title,{marginTop: 40}]}>ชื่อผู้ลงทะเบียน</Text>
-            <TextInput
-              style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
-              onChangeText={text=> this.setState({name: text})}
-              value={this.state.name} 
-              placeholder="ชื่อผู้ลงทะเบียน"
-            />
-
-            {/* <Text style={styles.title}>นามสกุล</Text>
-            <TextInput
-              style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
-              onChangeText={text=> this.setState({lname: text})}
-              value={this.state.lname} 
-              placeholder="นามสกุล"
-            /> */}
-
-            <Text style={styles.title}>หมายเลข ปชช.</Text>
-            <TextInput
-              editable={false}
-              keyboardType="number-pad"
-              style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5, backgroundColor: '#ddd'}}
-              onChangeText={text=> this.setState({id13: text})}
-              value={this.state.id13} 
-              placeholder="หมายเลข ปชช."
-            />
+          <Text style={styles.title}>ชื่อผู้ลงทะเบียน</Text>
+            <View style={{flexDirection: 'row'}}>
+              <TextInput
+                style={{ height: 40, width: 320, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5, paddingLeft: 35}}
+                onChangeText={text=> this.setState({name: text})}
+                value={this.state.name} 
+                placeholder="ชื่อผู้ลงทะเบียน"
+              />
+              <MaterialCommunityIcons name="face-profile" size={24} color="#cc66ff" style={{position: 'absolute', left: 5, alignSelf: 'center'}}/>
+            </View>
+            
+          <Text style={styles.title}>หมายเลข ปชช.</Text>
+            <View style={{flexDirection: 'row'}}>
+              <TextInput
+                editable={false}
+                keyboardType="number-pad"
+                maxLength={13}
+                style={{ height: 40, width: 320, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5, paddingLeft: 35, backgroundColor: '#ddd'}}
+                onChangeText={text=> this.setState({id13: text})}
+                value={this.state.id13} 
+                placeholder="หมายเลข ปชช."
+              />
+              <AntDesign name="idcard" size={24} color="#cc66ff" style={{position: 'absolute', left: 5, alignSelf: 'center'}}/>
+            </View>
 
             <Text style={styles.title}>Email</Text>
-            <TextInput
-              keyboardType="email-address"
-              style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
-              onChangeText={text=> this.setState({email: text})}
-              value={this.state.email} 
-              placeholder="Email"
-            />
+            <View style={{flexDirection: 'row'}}>
+              <TextInput
+                keyboardType="email-address"
+                style={{ height: 40, width: 320, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5, paddingLeft: 35}}
+                onChangeText={text=> this.setState({email: text})}
+                value={this.state.email} 
+                placeholder="Email"
+              />
+              <Entypo name="email" size={24} color="#cc66ff" style={{position: 'absolute', left: 5, alignSelf: 'center'}}/>
+            </View>
 
             <Text style={styles.title}>เบอร์โทร</Text>
-            <TextInput
-              keyboardType="phone-pad"
-              style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5}}
-              onChangeText={text=> this.setState({tel: text})}
-              value={this.state.tel} 
-              placeholder="เบอร์โทร"
-            />
+            <View style={{flexDirection: 'row'}}>
+              <TextInput
+                keyboardType="phone-pad"
+                style={{ height: 40, width: 320, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5, paddingLeft: 35}}
+                onChangeText={text=> this.setState({tel: text})}
+                value={this.state.tel} 
+                placeholder="เบอร์โทร"
+              />
+              <FontAwesome name="phone" size={24} color="#cc66ff" style={{position: 'absolute', left: 5, alignSelf: 'center'}}/>
+            </View>
 
             <Text style={styles.title}>หมายเลขฌาปนกิจ</Text>
-            <TextInput
-              editable={false}
-              style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5, backgroundColor: '#ddd'}}
-              onChangeText={text=> this.setState({user: text})}
-              value={this.state.user} 
-              placeholder="หมายเลขฌาปนกิจ"
-            />
+            <View style={{flexDirection: 'row'}}>
+              <TextInput
+                editable={false}
+                style={{ height: 40, width: 320, borderColor: 'gray', borderWidth: 1 , borderRadius: 5, padding: 5, paddingLeft: 35, backgroundColor: '#ddd'}}
+                onChangeText={text=> this.setState({user: text})}
+                value={this.state.user} 
+                placeholder="หมายเลขฌาปนกิจ"
+              />
+              <FontAwesome name="user-circle-o" size={24} color="#cc66ff" style={{position: 'absolute', left: 5, alignSelf: 'center'}}/>
+            </View>
 
             {/* <Text style={styles.title}>รหัสผ่าน</Text>
             <TextInput
