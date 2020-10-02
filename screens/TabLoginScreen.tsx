@@ -113,18 +113,20 @@ export default class TabLoginScreen extends Component {
             </View>
             
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-
-            <TouchableOpacity onPress={()=> this.setState({modalForgot: true})} style={{paddingVertical: 10, paddingHorizontal: 20, marginBottom: 20}}>
-              <Text style={{fontSize: 18, color: '#000'}}>ลืมรหัสผ่าน ?</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={()=> this.onSignin()} style={{paddingVertical: 10, paddingHorizontal: 30, backgroundColor: '#FF4B2B', borderRadius: 20}}>
-              <Text style={{fontSize: 18, color: '#fff'}}>Sing In</Text>
-            </TouchableOpacity>
             
-            <TouchableOpacity onPress={()=> this.props.navigation.navigate('Signup')} style={{paddingVertical: 10, paddingHorizontal: 20, marginTop: 20}}>
-              <Text style={{fontSize: 18, color: '#007bff'}}>Sing Up</Text>
-            </TouchableOpacity>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 20}}>
+              <TouchableOpacity onPress={()=> this.onSignin()} style={{paddingVertical: 10, paddingHorizontal: 30, backgroundColor: '#FF4B2B', borderRadius: 20}}>
+                <Text style={{fontSize: 18, color: '#fff'}}>Sing In</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity onPress={()=> this.props.navigation.navigate('Signup')} style={{paddingVertical: 10, paddingHorizontal: 30}}>
+                <Text style={{fontSize: 18, color: '#007bff'}}>Sing Up</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={()=> this.setState({modalForgot: true})} style={{paddingVertical: 10, paddingHorizontal: 30}}>
+                <Text style={{fontSize: 18, color: '#000'}}>ลืมรหัสผ่าน ?</Text>
+              </TouchableOpacity>
+            </View>
 
           </View>
 

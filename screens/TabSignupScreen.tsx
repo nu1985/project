@@ -128,13 +128,16 @@ export default class TabSignupScreen extends Component {
               placeholder="รหัสผ่าน"
             />
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-            <TouchableOpacity onPress={()=> this.onSignup()} style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#007bff', borderRadius: 5}}>
-              <Text style={{fontSize: 18, color: '#fff'}}>Sing Up</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=> this.props.navigation.navigate('Login')} style={{paddingVertical: 10, paddingHorizontal: 20, marginTop: 20}}>
-              <Text style={{fontSize: 18, color: '#007bff'}}>Sing in</Text>
-            </TouchableOpacity>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 20}}>
+              <TouchableOpacity onPress={()=> this.onSignup()} style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: '#007bff', borderRadius: 5}}>
+                <Text style={{fontSize: 18, color: '#fff'}}>Sing Up</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={()=> this.props.navigation.navigate('Login')} style={{paddingVertical: 10, paddingHorizontal: 20}}>
+                <Text style={{fontSize: 18, color: '#007bff'}}>Sing in</Text>
+              </TouchableOpacity>
+            </View>
 
           </View>
 
